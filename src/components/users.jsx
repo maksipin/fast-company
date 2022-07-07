@@ -21,8 +21,6 @@ const Users = () => {
     );
   };
 
-  const test = () => false;
-
   const userInfo = users.map((user, index) => {
     const qualities = user.qualities.map((q) => {
       let color = "badge m-1 bg-";
