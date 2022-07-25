@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
     const pageCount = Math.ceil(itemsCount / pageSize);
     const pages = _.range(1, pageCount + 1);
+
+    if (currentPage > pages.length) onPageChange(pages.length);
     if (pages === 1) return null;
     return (
         <nav>
@@ -31,10 +33,10 @@ const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
 };
 
 Pagination.propTypes = {
-    itemsCount: PropTypes.number.isRequired,
+    itemsCount: PropTypes.number,
     pageSize: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
-    currentPage: PropTypes.number.isRequired
+    currentPage: PropTypes.number
 };
 
 export default Pagination;
