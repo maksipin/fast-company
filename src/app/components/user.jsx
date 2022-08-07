@@ -22,7 +22,7 @@ function User({ users, onHandleDelete, onHandleBookMark }) {
                         className="btn bg-light text-dark"
                         onClick={() => onHandleBookMark(user._id)}
                     >
-                        <BookMark status={user.bookmark} />
+                        {/* <BookMark status={user.bookmark} /> */}
                     </button>
                 </td>
                 <td>
