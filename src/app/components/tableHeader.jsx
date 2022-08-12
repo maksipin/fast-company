@@ -53,6 +53,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
+
                         {columns[column].path
                             ? columns[column].path === selectedSort.path
                                 ? selectedSort.order === "asc"

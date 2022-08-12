@@ -12,7 +12,11 @@ const UserTable = ({
     onHandleBookMark
 }) => {
     const columns = {
-        name: { path: "name", name: "Имя" },
+        name: {
+            path: "name",
+            name: "Имя",
+            component: (user) => <a href={"/users/" + user._id}>{user.name}</a>
+        },
         qualities: {
             name: "Качества",
             component: (user) => <QualietiesList qualities={user.qualities} />
