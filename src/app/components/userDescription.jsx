@@ -14,7 +14,7 @@ const UserDescription = ({ match }) => {
         return (
             <>
                 <h1>{user.name}</h1>
-                <h2>{user.profession.name}</h2>
+                <h2>Профессия:{user.profession.name}</h2>
                 <QualietiesList qualities={user.qualities} />
                 <p>completedMeetings:{user.completedMeetings}</p>
                 <h2>Rate:{user.rate}</h2>
@@ -24,7 +24,7 @@ const UserDescription = ({ match }) => {
             </>
         );
     }
-    return <h2>loading</h2>;
+    return <p>loading...</p>;
 };
 
 UserDescription.propTypes = {
