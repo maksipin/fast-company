@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import TextField from "../../common/form/textField";
 import api from "../../../api";
 import SelectField from "../../common/form/selectField";
@@ -13,7 +13,7 @@ const UserEditForm = () => {
     const [data, setData] = useState("");
     const [qualities, setQualities] = useState([]);
     const [professions, setProfession] = useState([]);
-
+    console.log("data", data);
     const getProfessionById = (id) => {
         for (const prof of professions) {
             if (prof.value === id) {
@@ -44,10 +44,7 @@ const UserEditForm = () => {
                 name: data.name,
                 email: data.email,
                 sex: data.sex,
-                profession: {
-                    label: data.profession.name,
-                    value: data.profession._id
-                },
+                profession: data.profession._id,
                 qualities: data.qualities.map((q) => ({
                     value: q._id,
                     label: q.name,
@@ -82,6 +79,7 @@ const UserEditForm = () => {
             ...prevState,
             [target.name]: target.value
         }));
+        console.log("ChangeData", data);
     };
 
     const handleSubmit = (e) => {
@@ -97,6 +95,9 @@ const UserEditForm = () => {
     };
     return data ? (
         <div className="container mt-5">
+            <Link to={`/users/${userId}`}>
+                <button className="btn btn-primary w-20">Назад</button>
+            </Link>
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
                     <form onSubmit={handleSubmit}>
@@ -117,7 +118,7 @@ const UserEditForm = () => {
                             options={professions}
                             name="profession"
                             onChange={handleChange}
-                            value={data.profession.value}
+                            value={data.profession}
                         />
                         <RadioField
                             options={[
