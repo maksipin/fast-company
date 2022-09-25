@@ -1,2 +1,2 @@
-import UserEditForm from "./editUserForm";
-export default UserEditForm;
+import EditUserPage from "./editUserPage";
+export default EditUserPage;

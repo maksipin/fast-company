@@ -1,89 +1,50 @@
-import React, { useState, useEffect } from "react";
+import { orderBy } from "lodash";
+import React, { useEffect, useState } from "react";
 import api from "../../api";
-import AddCommentForm from "../common/form/addcommentForm";
-import CommentList from "./commentList";
-import PropTypes from "prop-types";
-import { timeSpan } from "../../utils/timeSpan";
+import { useParams } from "react-router-dom";
+import CommentsList, { AddCommentForm } from "../common/comments";
 
-const Comments = ({ userId }) => {
-    const [users, setUsers] = useState({ value: "", label: "" });
+const Comments = () => {
+    const { userId } = useParams();
     const [comments, setComments] = useState([]);
     useEffect(() => {
-        api.comments.fetchCommentsForUser(userId).then((data) =>
-            setComments(() => {
-                return data.sort((a, b) => b.created_at - a.created_at);
-            })
-        );
+        api.comments
+            .fetchCommentsForUser(userId)
+            .then((data) => setComments(data));
     }, []);
-
-    useEffect(() => {
-        api.users.fetchAll().then((data) =>
-            setUsers(() =>
-                data.map((user) => {
-                    return { value: user._id, label: user.name };
-                })
-            )
-        );
-    }, []);
-
-    const handleDelete = (id) => {
-        api.comments.remove(id).then();
-        setComments((prevState) =>
-            prevState.filter((comment) => comment._id !== id)
-        );
+    const handleSubmit = (data) => {
+        api.comments
+            .add({ ...data, pageId: userId })
+            .then((data) => setComments([...comments, data]));
     };
-
-    const getUserNameById = (data, id) => {
-        if (Array.isArray(data)) {
-            const userName = data.reduce((sum, user) => {
-                if (user.value === id) {
-                    sum = user.label;
-                }
-                return sum;
-            }, {});
-            return userName;
-        }
-    };
-    const addComment = (comment) => {
-        setComments((prevState) => [comment, ...prevState]);
-    };
-
-    const getFormat = (data) => {
-        return data.map((comment) => {
-            const userName = getUserNameById(users, comment.userId);
-            const timeComment = timeSpan(+comment.created_at);
-            return {
-                ...comment,
-                userId: userName,
-                created_at: timeComment
-            };
+    const handleRemoveComment = (id) => {
+        api.comments.remove(id).then((id) => {
+            setComments(comments.filter((x) => x._id !== id));
         });
     };
+    const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     return (
         <>
             <div className="card mb-2">
-                <div className="card-body">
-                    <div>
-                        <h2>New comment</h2>
-                        <AddCommentForm
-                            pageId={userId}
-                            users={users}
-                            addCommentFunc={addComment}
+                {" "}
+                <div className="card-body ">
+                    <AddCommentForm onSubmit={handleSubmit} />
+                </div>
+            </div>
+            {sortedComments.length > 0 && (
+                <div className="card mb-3">
+                    <div className="card-body ">
+                        <h2>Comments</h2>
+                        <hr />
+                        <CommentsList
+                            comments={sortedComments}
+                            onRemove={handleRemoveComment}
                         />
                     </div>
                 </div>
-            </div>
-
-            <CommentList
-                comments={getFormat(comments)}
-                onDelete={handleDelete}
-            />
+            )}
         </>
     );
-};
-
-Comments.propTypes = {
-    userId: PropTypes.string
 };
 
 export default Comments;

@@ -20,7 +20,6 @@ module.exports = {
             { anonymous: "always", named: "never" }
         ],
         "multiline-ternary": ["off"],
-        "spaced-comment": "off",
         quotes: [
             "error",
             "double",

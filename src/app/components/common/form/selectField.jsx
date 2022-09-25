@@ -34,7 +34,7 @@ const SelectField = ({
                 value={value}
                 onChange={handleChange}
             >
-                <option disabled value="" key="default">
+                <option disabled value="">
                     {defaultOption}
                 </option>
                 {optionsArray.length > 0 &&

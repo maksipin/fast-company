@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TextAreaField = ({ label, onChange, name, error, value }) => {
+const TextAreaField = ({ label, name, value, onChange, error }) => {
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
@@ -10,29 +10,32 @@ const TextAreaField = ({ label, onChange, name, error, value }) => {
     };
 
     return (
-        <>
-            <label forhtml={name} className="form-label">
-                {label}
-            </label>
-            <textarea
-                value={value}
-                name={name}
-                className={getInputClasses()}
-                id={name}
-                rows="3"
-                onChange={handleChange}
-            ></textarea>
-            {error && <div className="invalid-feedback">{error}</div>}
-        </>
+        <div className="mb-4">
+            <label htmlFor={name}> {label}</label>
+            <div className="input-group has-validation">
+                <textarea
+                    id={name}
+                    name={name}
+                    value={value}
+                    onChange={handleChange}
+                    className={getInputClasses()}
+                />
+
+                {error && <div className="invalid-feedback ">{error}</div>}
+            </div>
+        </div>
     );
 };
-
+TextAreaField.defaultProps = {
+    type: "text"
+};
 TextAreaField.propTypes = {
     label: PropTypes.string,
-    onChange: PropTypes.func,
+    type: PropTypes.string,
     name: PropTypes.string,
-    error: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    error: PropTypes.string
 };
 
 export default TextAreaField;
